@@ -8,11 +8,8 @@ def price_discount purchases,full_price
   selling_price = []
   purchases.each do |purchase|
     selling_price << purchase["price"]
-    if full_price.to_f > purchase["price"]
-      discounts << full_price.to_f - purchase["price"]
-    end
   end
-  return discounts,selling_price
+  selling_price
 end
 
 def average_discount(discounts, item)
@@ -96,18 +93,18 @@ puts "|_|                                       "
     puts item["brand"]
     # Calculate and print the total number of purchases
     puts item["purchases"].size
-    discounts,selling_price = price_discount item["purchases"],item["full-price"]
+    selling_price = price_discount item["purchases"],item["full-price"]
     puts "Total Amount of Sales for #{item["title"]}"
     total_selling_price = 0
     selling_price.each { |price| total_selling_price+=price }
     puts total_selling_price
     # Calculate and print the average price the toy sold for
     puts "Average Selling Price:"
-    puts (total_selling_price/selling_price.size)
-    total_discount = average_discount(discounts, item)
+    average_selling_price = (total_selling_price/selling_price.size)
+    puts average_selling_price
     #Calculate and print the average discount based off the average sales price
     puts "Average Discounted Percentage:"
-    puts discount_percentage((total_discount/discounts.size).round(2),item["full-price"].to_f).to_s + " %"
+    puts discount_percentage(item["full-price"].to_f-(average_selling_price),item["full-price"].to_f).to_s + " %"
     puts "---------------------------------------"
   end
 
