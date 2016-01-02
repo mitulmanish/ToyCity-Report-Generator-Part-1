@@ -5,18 +5,14 @@ products_hash = JSON.parse(file)
 
 def price_discount purchases,full_price
   discounts = []
-  total_sales = []
   selling_price = []
   purchases.each do |purchase|
-    price_shipping = 0
-    price_shipping += (purchase["price"] + purchase["shipping"]).to_f
-    total_sales << price_shipping
     selling_price << purchase["price"]
     if full_price.to_f > purchase["price"]
-      discounts << full_price.to_f - purchase["price"]
+      discounts << full_price.to_f-(full_price.to_f - purchase["price"])
     end
   end
-  return discounts,total_sales,selling_price
+  return discounts,selling_price
 end
 
 def average_discount(discounts, item)
@@ -49,7 +45,7 @@ def revenue_quantity_price items,brand
       brand_toys += item["stock"]
       prices << item["full-price"].to_f.round(2)
       item["purchases"].each do |purchase|
-        revenues << (purchase["price"] + purchase["shipping"]).to_f
+        revenues << (purchase["price"]).to_f
       end
     end
   end
@@ -97,22 +93,19 @@ puts "|_|                                       "
     puts item["brand"]
     # Calculate and print the total number of purchases
     puts item["purchases"].size
-    discounts,total_sales,selling_price = price_discount item["purchases"],item["full-price"]
-    sales_grand_total = 0
-    total_sales.each { |sales| sales_grand_total+=sales }
-    # Calcalate and print the total amount of sales
+    discounts,selling_price = price_discount item["purchases"],item["full-price"]
     puts "Total Amount of Sales for #{item["title"]}"
-    puts sales_grand_total
     total_selling_price = 0
     selling_price.each { |price| total_selling_price+=price }
+    puts total_selling_price
     # Calculate and print the average price the toy sold for
     puts "Average Selling Price:"
     puts (total_selling_price/selling_price.size)
     total_discount = average_discount(discounts, item)
     #Calculate and print the average discount based off the average sales price
-    puts "Average Discount:"
+    puts "Average Discounted Price:"
     puts (total_discount/discounts.size).round(2)
-    puts ""
+    puts "---------------------------------------"
   end
 
   puts " _                         _     "
@@ -147,7 +140,7 @@ puts "|_|                                       "
       #Calculate and print the total revenue of all the brand's toy sales combined
       puts "Total revenue for #{brand}"
       puts total_revenue.round(2)
-      puts ""
+      puts "---------------------------------------"
   end
 
 
