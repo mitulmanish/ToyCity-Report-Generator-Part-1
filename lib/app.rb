@@ -9,7 +9,7 @@ def price_discount purchases,full_price
   purchases.each do |purchase|
     selling_price << purchase["price"]
     if full_price.to_f > purchase["price"]
-      discounts << full_price.to_f-(full_price.to_f - purchase["price"])
+      discounts << full_price.to_f - purchase["price"]
     end
   end
   return discounts,selling_price
@@ -59,6 +59,9 @@ def find_brand(products_hash)
   end
   brands
 end
+def discount_percentage average_discount,full_price
+  ((average_discount/full_price)*100).round(2)
+end
 
 
 # Print today's date
@@ -103,8 +106,8 @@ puts "|_|                                       "
     puts (total_selling_price/selling_price.size)
     total_discount = average_discount(discounts, item)
     #Calculate and print the average discount based off the average sales price
-    puts "Average Discounted Price:"
-    puts (total_discount/discounts.size).round(2)
+    puts "Average Discounted Percentage:"
+    puts discount_percentage((total_discount/discounts.size).round(2),item["full-price"].to_f).to_s + " %"
     puts "---------------------------------------"
   end
 
