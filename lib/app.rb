@@ -3,8 +3,7 @@ path = File.join(File.dirname(__FILE__), '../data/products.json')
 file = File.read(path)
 products_hash = JSON.parse(file)
 
-def price_discount purchases,full_price
-  discounts = []
+def product_selling_price purchases
   selling_price = []
   purchases.each do |purchase|
     selling_price << purchase["price"]
@@ -12,7 +11,7 @@ def price_discount purchases,full_price
   selling_price
 end
 
-def average_discount(discounts, item)
+def average_discount(discounts)
   total_discount = 0
   if discounts.size > 0
     discounts.each do |discount|
@@ -93,7 +92,7 @@ puts "|_|                                       "
     puts item["brand"]
     # Calculate and print the total number of purchases
     puts item["purchases"].size
-    selling_price = price_discount item["purchases"],item["full-price"]
+    selling_price = product_selling_price(item["purchases"])
     puts "Total Amount of Sales for #{item["title"]}"
     total_selling_price = 0
     selling_price.each { |price| total_selling_price+=price }
